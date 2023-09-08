@@ -1,0 +1,58 @@
+{% extends 'view_base.html' %}
+
+{% load static %}
+{% load customtags %}
+{% load humanize %}
+{% load bootstrap4 %}
+
+
+{% block viewTitle %}Process of Order {{ order.code|capfirst }}{% endblock %}
+
+{% block addBtn %}
+  <a href="{% url 'create-process' order.id%}?next={{ request.path }}" class="btn btn-info">Add Process</a>
+{% endblock %}
+
+{% block searchForm %}
+  <form method="GET" class="searchForm">
+    {% bootstrap_form myFilter.form %}
+    <button class="btn btn-primary">Search</button>
+  </form>
+{% endblock %}
+
+{% block columns %}
+  {% if flags %}
+    {% block form %}
+      <form action="{% url 'delete-process'%}?next={{ request.path }}" method="POST">{% csrf_token %}
+    {% endblock %}
+    <th></th>
+
+    <th>ID</th>
+    <th>ID | Order Code</th>
+    <th>Process Name</th>
+    <th>Payment/unit</th>
+    <th>Quantity</th>
+    <th>Description</th>
+  {% endif %}           
+{% endblock %}
+
+{% block tbodyContent %}
+  {% if not flags %}
+    <h3>No process</h3>
+    {% else %} 
+      {% for process in processes %}
+        <tr>
+          <td><input type="checkbox" name="selected" value="{{ process.id }}"></td>
+
+          <td scope="row"><a href="{% url 'edit-process' process.id %}?next={{ request.path }}">{{ process.id }}</a></td>
+          <td><a href="{% url 'edit-order' process.orderID|escape|getID %}?next={{ request.path }}">{{ process.orderID }}</a></td>
+          <td>{{ process.name }}</td>
+          <td>{{ process.price|intcomma }}</td>
+          <td>{{ process.quantity|intcomma }}</td>
+          <td>{{ process.description }}</td>
+          </td>
+        </tr>
+      {% endfor %} 
+  {% endif %}
+{% endblock %}
+
+

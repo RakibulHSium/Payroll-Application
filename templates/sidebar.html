@@ -1,0 +1,57 @@
+{% url 'employee' as employee_url %}
+{% url 'position' as position_url %}
+{% url 'employmentType' as employmentType_url %}
+{% url 'order' as order_url %}
+{% url 'process' as process_url %}
+{% url 'completedProcess' as completedProcess_url %}
+{% url 'dailySalary' as dailySalary_url %}
+{% url 'inputDate-salary' as inputDateSalary_url %}
+{% url 'inputDate-attendance' as inputDateAttendance_url %}
+{% url 'attendance' as attendance_url %}
+
+
+
+  <div>
+    <nav class="navbar navbar-dark navbar-expand-sm">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+    <div class="collapse" id="navbarToggleExternalContent">
+      <div class="navbar-nav">
+        <div class="text-center text-white sidebarHeader">
+          <h4>Hi, {{ request.user.username }}</h4>
+        </div>
+    
+        <div class="list-group">
+          <span class="text-uppercase">Dashboard</span>
+
+          <a href="{% url 'employee' %}" class="list-group-item {% if request.path == employee_url %}  active {% endif %}">Employees</a>
+          <a href="{% url 'position' %}" class="list-group-item {% if request.path == position_url %} active {% endif %}">Position</a>
+          <a href="{% url 'employmentType' %}" class="list-group-item {% if request.path == employmentType_url %} active {% endif %}">Employment Type</a>
+
+          <a href="{% url 'order' %}"
+            class="list-group-item {% if request.path == order_url %} active {% endif %}">Orders
+            <span class="badge"></span>
+          </a>
+          <a href="{% url 'process' %}" class="list-group-item {% if request.path == process_url %} active {% endif %}">Processes</a>
+          
+          <a href="{% url 'completedProcess' %}" class="list-group-item {% if request.path == completedProcess_url %} active {% endif %}">Completed Process</a>
+          
+          <a href="{% url 'dailySalary' %}" class="list-group-item {% if request.path == dailySalary_url %} active {% endif %}">Daily Salaries</a>
+
+          <a href="{% url 'inputDate-salary' %}" class="list-group-item {% if request.path == inputDateSalary_url %} active {% endif %}">Salaries</a>
+
+          <a href="{% url 'attendance' %}" class="list-group-item {% if request.path == attendance_url %} active {% endif %}">View Attendance</a>
+          <a href="{% url 'inputDate-attendance' %}" class="list-group-item {% if request.path == inputDateAttendance_url %} active {% endif %}">Input Attendance</a>
+
+          <a href="{% url 'allowance' %}" class="list-group-item {% if request.path == allowance_url %} active {% endif %}">Allowance</a>
+          <a href="{% url 'deduction' %}" class="list-group-item {% if request.path == deduction_url %} active {% endif %}">Deduction</a>
+        </div>
+    
+        <div class="text-center m-4">
+          <a href="{% url 'logout' %}" class="btn btn-pink">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>

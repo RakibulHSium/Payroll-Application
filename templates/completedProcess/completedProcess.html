@@ -1,0 +1,69 @@
+{% extends 'view_base.html' %}
+
+{% load customtags %}
+{% load humanize %}
+{% load bootstrap4 %}
+
+{% block script %}
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"> 
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+  <script>
+  $(document).ready(function() {
+      $('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+
+  });
+  </script>
+{% endblock %}
+
+{% block viewTitle %}Completed Process{% endblock %}
+
+{% block addBtn %}
+  {% if processFlag %}
+    <a href="{% url 'create-completedProcess' %}?next={{ request.path }}" class="btn btn-info">Add Completed Process</a>
+  {% else %}
+    <a href="{% url 'create-process' %}" class="btn btn-info">Add Process</a>
+  {% endif %}
+
+{% endblock %}
+
+{% block searchForm %}
+  <form method="GET" class="searchForm">
+    {% bootstrap_form myFilter.form %}
+    <button class="btn btn-primary col-lg-12">Search</button>
+  </form>
+{% endblock %}
+
+{% block columns %}
+  {% if flags %}
+    {% block form %}
+      <form action="{% url 'delete-completedProcess'%}?next={{ request.path }}" method="POST">{% csrf_token %}
+    {% endblock %}
+
+    <th></th>
+
+    <th>ID</th>
+    <th>ID | Process Name</th>
+    <th>ID | Employee Name</th>
+    <th>Quantity</th>
+    <th>Date Recorded</th>
+  {% endif %}
+{% endblock %}
+
+{% block tbodyContent %}
+  {% if not flags %}
+  <h3>No Completed Process</h3>
+  {% else %}
+    {% for completedProcess in completedProcesses %}
+      <tr>
+        <td><input type="checkbox" name="selected" value="{{ completedProcess.id }}"></td>
+
+        <td scope="row"><a href="{% url 'edit-completedProcess' completedProcess.id %}?next={{ request.path }}">{{ completedProcess.id }}</a></td>
+        <td><a href="{% url 'completedProcess-of-process' completedProcess.processID|escape|getID %}">{{ completedProcess.processID }}</a></td>
+        <td><a href="{% url 'completedProcess-of-employee' completedProcess.employeeID|escape|getID %}">{{ completedProcess.employeeID }}</a></td>
+        <td>{{ completedProcess.quantity|intcomma }}</td>
+        <td>{{ completedProcess.dateRecorded  }}</td>
+      </tr>
+    {% endfor %}
+  {% endif %}    
+{% endblock %}

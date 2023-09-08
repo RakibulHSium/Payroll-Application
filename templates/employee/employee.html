@@ -1,0 +1,68 @@
+{% extends 'view_base.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+
+{% block script %}
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"> 
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+  <script>
+  $(document).ready(function() {
+      $('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+
+  });
+  </script>
+{% endblock %}
+
+{% block viewTitle %}Employee{% endblock %}
+{% block addBtn %}
+<a href="{% url 'create-position' %}?next={{ request.path }}" class="btn btn-info">Add Position</a>
+<a href="{% url 'create-employmentType' %}?next={{ request.path }}" class="btn btn-info">Add Employment Type</a>
+<a href="{% url 'create-employee' %}" class="btn btn-info">Add Employee</a>
+
+{% endblock %}
+
+{% block searchForm %}
+
+  <form method="GET" class="searchForm">
+    {% bootstrap_form myFilter.form %}
+    <button class="btn btn-primary col-lg-12" >Search</button>
+  </form>
+
+{% endblock %}
+
+{% block columns %}
+  {% if flags %}
+  {% block form %}
+    <form action="{% url 'delete-employee'%}" method="POST">{% csrf_token %}
+  {% endblock %}
+
+    <th></th>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Position</th>
+    <th>Employment Type</th>
+    <th>Date Hired</th>
+    <th>Notes</th>
+  {% endif %}
+{% endblock %}
+            
+{% block tbodyContent %}
+  {% if not flags %}
+  <h3>No Employee</h3>
+  {% else %}
+    {% for employee  in employees %}
+      <tr>
+        <td><input type="checkbox" name="selected" value="{{ employee.id }}" id="enableDeleteBtn"></td>
+
+        <td scope="row"><a href="{% url 'edit-employee' employee.id %}?next={{ request.path }}">{{ employee.id }}</a></td>
+        <td>{{ employee.firstName|capfirst }} {% if employee.lastName %}{{ employee.lastName|capfirst }}{% endif %}</td>
+        <td>{{ employee.positionID }}</td> 
+        <td>{{ employee.employmentTypeID }}</td>
+        <td>{{ employee.hireDate }}</td>
+        <td>{{ employee.notes|slice:"0:37" }}{% if employee.notes|length > 37 %}...{% endif %}</td>
+      </tr>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
