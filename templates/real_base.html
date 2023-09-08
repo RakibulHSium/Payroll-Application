@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payroll</title>
+
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  
+
+  {% block script %}
+  {% endblock %}
+</head>
+<body>
+
+  <div class="container-fluid">
+
+    <div class="col-lg-2 col-md-2 col-sm-3 sidebar">
+      {% include 'sidebar.html' %}
+    </div>
+    <div class="col-lg-10 offset-lg-2 col-md-10 offset-md-2 col-sm-9 offset-sm-3 content">
+
+      {% block page %} {% endblock %}
+    </div>
+  </div>
+  
+  
+  
+  
+  <script>
+    $(".navbar-toggler").click(function() {
+      $(".content").toggleClass("z");
+    });
+
+    $(".searchBtn").click(function() {
+      $(".searchForm").toggleClass("searchFormShow");
+    });
+
+    // $("#burger_container").click(function() {
+    //   $(".icon").toggleClass("close");
+    // });
+
+    // $("#burger_container").click(function() {
+    //   $(".burger").toggleClass("open");
+    // });
+
+    // function enableDeleteBtn(checkBox){
+    //   //If the checkbox has been checked
+    //   if(checkBox.checked){
+    //       //Set the disabled property to FALSE and enable the button.
+    //       document.getElementById("delBtn").disabled = false;
+    //   } 
+    //   // else{
+    //   //     //Otherwise, disable the submit button.
+    //   //     document.getElementById("delBtn").disabled = true;
+    //   // }
+    // }
+    // $('#enableDeleteBtn').click(function(){
+    // //If the checkbox is checked.
+    //   if($(this).is(':checked')){
+    //       //Enable the submit button.
+    //       $('#delBtn').attr("disabled", false);
+    //   } else{
+    //       //If it is not checked, disable the button.
+    //       $('#delBtn').attr("disabled", true);
+    //   }
+    // });
+
+  </script>
+</body>
+</html>

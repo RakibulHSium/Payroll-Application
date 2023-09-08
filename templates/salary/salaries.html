@@ -1,0 +1,57 @@
+{% extends 'real_base.html' %}
+
+{% load static %}
+{% load customtags %}
+{% load humanize %}
+
+{% block script %}
+{% endblock %}
+
+{% block page %}
+
+  <div class="card">
+    <div class="card-header bg-blue">
+      <h4 class="card-title text-center text-white">Salary from {{ startDate }} to {{ endDate }}</h4>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered table-hover table-striped table-responsive-lg">
+        <thead>
+          <tr class="bg-gray">
+              {% if flags %}
+                <th>ID | Employee</th>
+                <th>Salary</th>
+                <th>Piece rate payment</th>
+                <th>Allowance</th>
+                <th>Deduction</th>
+                <th>Total</th>
+              {% endif %}
+          </tr>
+      </thead>
+      {% if not flags %}
+      <tbody>
+        
+          <h3>No Salary Record in this date ({{ startDate }} to {{ endDate }}</h3>
+          {% else %}
+            {% for salary  in salaries %}
+              <tr>
+                <td><a href="{% url 'salary-details-employee' salary.employeeID|escape|getID %}?next={{ request.path }}">{{ salary.employeeID }}</a></td>
+                <td>{{ salary.salary|intcomma }}</td> 
+                <td>{{ salary.pieceRate|intcomma }}</td>
+                <td>{{ salary.allowance|intcomma }}</td>
+                <td>{% if salary.deduction > 0 %}-{% endif %}{{ salary.deduction|intcomma }}</td>
+                <td>{{ salary.total|intcomma }}</td>
+              </tr>
+            {% endfor %}
+          
+      </tbody>
+      </table>
+      <h3 style="text-align: right;">Total = {{ total|intcomma }}</h3>
+      <a class="btn btn-info" href="{% url 'view-salary-pdf' %}" target="_blank">View PDF</a>
+			<a class="btn btn-info"  href="{% url 'download-salary-pdf' %}">Download PDF</a>
+      {% endif %}
+    </div>
+  </div>
+  
+{% endblock %}
+
+ 
